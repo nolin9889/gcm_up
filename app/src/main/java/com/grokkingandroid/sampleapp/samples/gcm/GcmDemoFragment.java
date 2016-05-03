@@ -167,11 +167,7 @@ public class GcmDemoFragment extends DemoBaseFragment implements
          for (int i = 0; i < 5; i++)
          {
             sendMessage();
-            try {
-               TimeUnit.SECONDS.sleep(10);
-            } catch (InterruptedException e) {
-               e.printStackTrace();
-            }
+
             /* try {
                Thread.sleep(10000
                );
@@ -239,6 +235,12 @@ public class GcmDemoFragment extends DemoBaseFragment implements
       Crouton.showText(getActivity(), msgTxt, Style.INFO);            
       msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
       getActivity().startService(msgIntent);
+
+      try {
+         TimeUnit.SECONDS.sleep(10);
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
 
    }
 
