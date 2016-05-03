@@ -38,6 +38,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.grokkingandroid.sampleapp.samples.gcm.Constants.EventbusMessageType;
 import com.grokkingandroid.sampleapp.samples.gcm.Constants.State;
 
+import java.util.concurrent.TimeUnit;
+
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -161,7 +163,23 @@ public class GcmDemoFragment extends DemoBaseFragment implements
             break;
          }
       } else if (view.getId() == R.id.btn_send_message) {
-         sendMessage();
+         //sendMessage();
+         for (int i = 0; i < 5; i++)
+         {
+            sendMessage();
+            try {
+               TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
+            /* try {
+               Thread.sleep(10000
+               );
+            } catch (InterruptedException ex) {
+               Thread.currentThread().interrupt();
+            } */
+
+         }
       } else if (view.getId() == R.id.btn_select_account) {
          startAccountSelector();
       }
@@ -200,22 +218,28 @@ public class GcmDemoFragment extends DemoBaseFragment implements
       regIntent.setAction(Constants.ACTION_UNREGISTER);
       getActivity().startService(regIntent);
    }
+   static int abc = 0;
+   String CSE110[] = {"Hello", "World", "CSE110", "Software", "Engineering"};
 
    private void sendMessage() {
       Intent msgIntent = new Intent(getActivity(), GcmIntentService.class);
       msgIntent.setAction(Constants.ACTION_ECHO);
       String msg;
-      if (!TextUtils.isEmpty(mTxtMsg.getText())) {
+      /*if (!TextUtils.isEmpty(mTxtMsg.getText())) {
          msg = mTxtMsg.getText().toString();
          mTxtMsg.setText("");
       }
       else {
          msg = getActivity().getString(R.string.no_message);
-      }
+      } */
+      msg = CSE110[abc++];
+      if (abc == 5) abc = 0;
+
       String msgTxt = getString(R.string.msg_sent, msg);
       Crouton.showText(getActivity(), msgTxt, Style.INFO);            
       msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
       getActivity().startService(msgIntent);
+
    }
 
     /**
